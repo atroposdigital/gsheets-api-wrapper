@@ -15,4 +15,8 @@ class Spreadsheet:
     def vertical_alignment_all(self, sheet_id, alignment):
         if alignment not in ["TOP", "MIDDLE", "BOTTOM"]:
             raise ValueError
-        update = RepeatCellUpdate(sheet_id)
+        update = RepeatCellUpdate(sheet_id,"asda","userEnteredFormat.verticalAlignment", userEnteredFormat_value = alignment)
+        update = RepeatCellUpdate(sheet_id,"asda","userEnteredFormat(horizontalAlignment,textFormat)", userEnteredFormat_value = alignment)
+        update = RepeatCellUpdate(sheet_id,"asda","dataValidation,userEnteredFormat.textFormat.foregroundColorStyle", userEnteredFormat_value = alignment)
+        update = RepeatCellUpdate(sheet_id,"asda","automaticFormat(horizontalAlignment,textFormat),userEnteredFormat.textFormat.foregroundColorStyle", userEnteredFormat_value = alignment)
+        update = RepeatCellUpdate(sheet_id,"asda","automaticFormat(horizontalAlignment,textFormat),dataValidation,userEnteredFormat.textFormat.foregroundColorStyle", userEnteredFormat_value = alignment)

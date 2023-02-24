@@ -5,4 +5,4 @@ client = GoogleAPIClient()
 
 ss = Spreadsheet("1JkU69mcn8YdqV2Pvflo65iNwS7i3BuOAySOWExlcg84")
 
-ss.vertical_alignment_all(1, "asd")
+ss.vertical_alignment_all(1, "MIDDLE")
