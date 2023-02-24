@@ -6,7 +6,7 @@ class Spreadsheet:
         self._updates = []
         self.spreadsheet_id = spreadsheet_id
 
-    def _reset_updates(self):
+    def reset_updates(self):
         self._updates = []
 
     def to_dict(self):
