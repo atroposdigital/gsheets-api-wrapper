@@ -1,15 +1,58 @@
 class RepeatCellUpdate:
 
-    def __init__(self, range, cell_data, fields, **kwargs):
-        self.range = range
-        self.cell = {}
-        self.fields = fields
-        self._construct_cell_data()
+    def __init__(
+        self,
+        range,
+        verticalAlignment = None,
+        horizontalAlignment = None,
+        bold = False,
+        backgroundColor = None,
+    ):
+        
+        self._range = range.get()
+
+        self._cell_data = {}
+        self._fields = []
+
+        if verticalAlignment is not None:
+            self._add_to_cell_data({'verticalAlignment': verticalAlignment})
+            self._fields.append('userEnteredFormat.verticalAlignment')
+
+        if horizontalAlignment is not None:
+            self._add_to_cell_data({'horizontalAlignment': horizontalAlignment})
+            self._fields.append('userEnteredFormat.horizontalAlignment')
+
+        if bold:
+            self._add_to_cell_data({'textFormat': {'bold': True}})
+            self._fields.append('userEnteredFormat.textFormat')
+
+        if backgroundColor:
+            self._add_to_cell_data({'backgroundColor': backgroundColor.to_dict()})
+            self._fields.append('userEnteredFormat.backgroundColor')
     
-    def _construct_cell_data(self):
-        self._field_mask_string_to_dict(self.fields)
+    def _add_to_cell_data(
+        self,
+        value,
+        key = "userEnteredFormat"
+    ):
+        if self._cell_data.get(key) is None:
+            self._cell_data[key] = value
+        else:
+            self._cell_data[key].update(value)
+
+    def to_request_dict(self):
+        return {
+            'repeatCell': {
+                'range': self._range,
+                'cell': self._cell_data,
+                'fields': ",".join(self._fields)
+            }
+        }
 
     def _field_mask_string_to_dict(self, field_mask_string):
+        # Use this for test:
+        #update = RepeatCellUpdate(sheet_id,"asda","automaticFormat(horizontalAlignment,cellFormat,textFormat),  \
+        # dataValidation,customFormat(verticalAlignment,sheetColoring),userEnteredFormat.textFormat.foregroundColorStyle", userEnteredFormat_value = alignment)
         def _separate_transitive(parts):
             reconstruct = []
             reconstruct_flag = False
