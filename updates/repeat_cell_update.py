@@ -26,8 +26,8 @@ class RepeatCellUpdate:
             self._add_to_cell_data({'textFormat': {'bold': True}})
             self._fields.append('userEnteredFormat.textFormat')
 
-        if backgroundColor:
-            self._add_to_cell_data({'backgroundColor': backgroundColor.to_dict()})
+        if backgroundColor is not None:
+            self._add_to_cell_data({'backgroundColor': backgroundColor.get()})
             self._fields.append('userEnteredFormat.backgroundColor')
     
     def _add_to_cell_data(
