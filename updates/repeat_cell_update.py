@@ -5,10 +5,13 @@ class RepeatCellUpdate:
         range,
         verticalAlignment = None,
         horizontalAlignment = None,
+        wrapStrategy = None,
         bold = False,
         italic = False,
-        backgroundColor = None,
-        wrapStrategy = None,
+        strikethrough = False,
+        underline = False,
+        backgroundColorStyle = None,
+        foregroundColorStyle = None,
     ):
         
         self._range = range.get()
@@ -24,22 +27,33 @@ class RepeatCellUpdate:
             self._add_to_cell_data({'horizontalAlignment': horizontalAlignment})
             self._fields.append('userEnteredFormat.horizontalAlignment')
 
-        if bold:
-            self._add_to_cell_data({'textFormat': {'bold': True}})
-            self._fields.append('userEnteredFormat.textFormat')
-
-        if italic:
-            self._add_to_cell_data({'textFormat': {'italic': True}})
-            self._fields.append('userEnteredFormat.textFormat')    
-
-        #TODO update to backgroundColorStyle
-        if backgroundColor is not None:
-            self._add_to_cell_data({'backgroundColor': backgroundColor.get()})
-            self._fields.append('userEnteredFormat.backgroundColor')
-
         if wrapStrategy is not None:
             self._add_to_cell_data({'wrapStrategy': wrapStrategy})
             self._fields.append('userEnteredFormat.wrapStrategy')
+
+        if bold:
+            self._add_to_cell_data({'textFormat': {'bold': True}})
+            self._fields.append('userEnteredFormat.textFormat.bold')
+
+        if italic:
+            self._add_to_cell_data({'textFormat': {'italic': True}})
+            self._fields.append('userEnteredFormat.textFormat.italic')
+        
+        if strikethrough:
+            self._add_to_cell_data({'textFormat': {'strikethrough': True}})
+            self._fields.append('userEnteredFormat.textFormat.strikethrough')
+
+        if underline:
+            self._add_to_cell_data({'textFormat': {'underline': True}})
+            self._fields.append('userEnteredFormat.textFormat.underline')   
+
+        if backgroundColorStyle is not None:
+            self._add_to_cell_data({'backgroundColorStyle': {'rgbColor': backgroundColorStyle.get()}})
+            self._fields.append('userEnteredFormat.backgroundColorStyle')
+
+        if foregroundColorStyle is not None:
+            self._add_to_cell_data({'textFormat': {'foregroundColorStyle': {'rgbColor': foregroundColorStyle.get()}}})
+            self._fields.append('userEnteredFormat.textFormat.foregroundColorStyle')
     
     def _add_to_cell_data(
         self,

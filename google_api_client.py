@@ -23,7 +23,13 @@ class GoogleAPIClient:
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except:
+                    os.remove("token.json")
+                finally:
+                    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', self.SCOPES)
+                    creds = flow.run_local_server(port=0)
             else:
                 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', self.SCOPES)
                 creds = flow.run_local_server(port=0)
@@ -41,6 +47,7 @@ class GoogleAPIClient:
         return service
 
     def batch_update(self, spreadsheet):
+        # spreadsheet._clean_up_requests()
         self._service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet.spreadsheet_id, body=spreadsheet.to_dict()).execute()
         spreadsheet.reset_updates()
     
