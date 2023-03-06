@@ -6,7 +6,9 @@ class RepeatCellUpdate:
         verticalAlignment = None,
         horizontalAlignment = None,
         bold = False,
+        italic = False,
         backgroundColor = None,
+        wrapStrategy = None,
     ):
         
         self._range = range.get()
@@ -26,9 +28,18 @@ class RepeatCellUpdate:
             self._add_to_cell_data({'textFormat': {'bold': True}})
             self._fields.append('userEnteredFormat.textFormat')
 
+        if italic:
+            self._add_to_cell_data({'textFormat': {'italic': True}})
+            self._fields.append('userEnteredFormat.textFormat')    
+
+        #TODO update to backgroundColorStyle
         if backgroundColor is not None:
             self._add_to_cell_data({'backgroundColor': backgroundColor.get()})
             self._fields.append('userEnteredFormat.backgroundColor')
+
+        if wrapStrategy is not None:
+            self._add_to_cell_data({'wrapStrategy': wrapStrategy})
+            self._fields.append('userEnteredFormat.wrapStrategy')
     
     def _add_to_cell_data(
         self,

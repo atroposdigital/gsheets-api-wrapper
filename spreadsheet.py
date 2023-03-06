@@ -29,8 +29,16 @@ class Spreadsheet:
     
     def bold(self, range):
         self._updates.append(RepeatCellUpdate(range, bold = True).to_request_dict())
-        # print(self._updates)
+    
+    def italic(self, range):
+        self._updates.append(RepeatCellUpdate(range, italic = True).to_request_dict())
     
     def background_color(self, range, color):
         self._updates.append(RepeatCellUpdate(range, backgroundColor = color).to_request_dict())
+        # print(self._updates)
+
+    def wrap_strategy(self, range, strategy):
+        if strategy not in ["OVERFLOW_CELL", "CLIP", "WRAP"]:
+            raise ValueError
+        self._updates.append(RepeatCellUpdate(range, wrapStrategy = strategy).to_request_dict())
         # print(self._updates)
