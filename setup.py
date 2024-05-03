@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-setup(name = 'gsheets-api-wrapper',
+setup(name = 'gsheets_api_wrapper',
    version = '0.0.1',
    description = 'A wrapper for the Google API',
    package_dir = {"": "app"},
