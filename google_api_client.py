@@ -8,11 +8,12 @@ import os.path
 
 class GoogleAPIClient:
     # If modifying these scopes, delete the file token.json.
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/webmasters']
     
     def __init__(self):
         creds = self._get_credentials()
-        self._service = self._build_service(creds)
+        self._sheets_service = self._build_sheets_service(creds)
+        self._gsc_service = self._build_gsc_service(creds)
 
     def _get_credentials(self):
         creds = None
@@ -38,9 +39,17 @@ class GoogleAPIClient:
                 token.write(creds.to_json())
         return creds
     
-    def _build_service(self, creds):
+    def _build_sheets_service(self, creds):
         try:
             service = build('sheets', 'v4', credentials=creds)
+        except HttpError as error:
+            print(f"An error occurred: {error}")
+            return error
+        return service
+    
+    def _build_gsc_service(self, creds):
+        try:
+            service = build('searchconsole', 'v1', credentials=creds)
         except HttpError as error:
             print(f"An error occurred: {error}")
             return error
@@ -50,5 +59,3 @@ class GoogleAPIClient:
         # spreadsheet._clean_up_requests()
         self._service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet.spreadsheet_id, body=spreadsheet.to_dict()).execute()
         spreadsheet.reset_updates()
-    
-    
